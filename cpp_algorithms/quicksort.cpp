@@ -3,10 +3,9 @@
 #include<sstream>
 #include<vector>
 #include<tuple>
-// #include<stdlib.h>
+#include<time.h>
 #include<cstdlib>
 #include<stdio.h>
-// #include<boost>
 
 
 using namespace std;
@@ -71,11 +70,19 @@ string to_string(const int array[], const int size) {
 // }
 
 
+// Note: This is not for quicksort, but for
+// removing a value or something. Change this
+// later.
 tuple< vector<int>, vector<int> > gen_random_data() {
     const int n = 20;
     const int min = 5;
     const int max = n - 5;
-    const int k = srand(time(NULL)) % max + min;
+
+    // Seed random data
+    srand(time(NULL));
+
+    // Generate random value
+    const int k = rand() % max + min;
 
     vector<int> input;
     vector<int> expected;
