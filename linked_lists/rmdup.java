@@ -3,26 +3,8 @@ import java.util.Arrays;
 
 public class rmdup {
 
-    public class Node<V> {
-        public Node next;
-        public final V value;
-
-        public Node(final V value) {
-            this.value = value;
-            this.next = null;
-        }
-
-        public void add(V value) {
-            if (this.next == null) {
-                this.next = new Node<V>(value);
-            } else {
-                this.next.add(value);
-            }
-        }
-    }
-
     public class List<V> {
-        public Node head;
+        public Node<V> head;
 
         public List() {
             this.head = null;
@@ -39,7 +21,7 @@ public class rmdup {
 
         public int size() {
             int i = 0;
-            for (Node n = this.head; n != null; n = n.next) {
+            for (Node<V> n = this.head; n != null; n = n.next) {
                 i++;
             }
             return i;
@@ -49,13 +31,33 @@ public class rmdup {
             final int n = this.size();
             V[] result = new V[n];
 
-            Node node = this.head;
+            Node<V> node = this.head;
             for (int i = 0; i < n; i++, node = node.next) {
                 result[i] = node.value;
             }
 
             return result;
         }
+
+
+    public class Node<V> {
+        public Node<V> next;
+        public V value;
+
+        public Node(final V value) {
+            this.value = value;
+            this.next = null;
+        }
+
+        public void add(V value) {
+            if (this.next == null) {
+                this.next = new Node<V>(value);
+            } else {
+                this.next.add(value);
+            }
+        }
+    }
+
     }
 
 
