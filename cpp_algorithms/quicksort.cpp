@@ -7,11 +7,32 @@
 #include<cstdlib>
 #include<stdio.h>
 
+#include<mutex>
+#include<fstream>
+#include<stdexcept>
+
+// Discussion of unit testing frameworks:
+// https://accu.org/index.php/journals/1326
+// http://gamesfromwithin.com/exploring-the-c-unit-testing-framework-jungle
+// https://stackoverflow.com/questions/91683/how-do-you-implement-unit-testing-in-large-scale-c-projects
+
 
 using namespace std;
 
 template<typename A> void quicksort(A array[]) {
     // ...
+}
+
+
+// Interesting RAII (Resource Allocation is Initialization) Example:
+void write_to_file(const string & message) {
+    static mutex m;
+    lock_guard<mutex> lock(m);
+    ofstream file("example.txt");
+
+    if (!file.is_open())
+        throw runtime_error("Unable to open file");
+    file << message << endl;
 }
 
 
