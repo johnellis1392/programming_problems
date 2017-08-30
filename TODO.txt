@@ -5,7 +5,10 @@ Problems to Finish:
 
 Arrays and Strings: 0
 Linked Lists: 0
-Stacks and Queues: 4
+Stacks and Queues: 3
+* SetOfStacks
+* Towers of Hanoi
+* Sort Stack
 Trees and Graphs: 8
 
 Subtotal: 12
