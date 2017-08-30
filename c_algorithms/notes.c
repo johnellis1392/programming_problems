@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 
 // Some notes and links for c stuff:
 //
@@ -8,3 +10,9 @@
 // https://www.codeproject.com/Articles/13853/Secure-Coding-Best-Practices-for-Memory-Allocation
 // http://www.lysator.liu.se/c/ten-commandments.html
 // http://c-faq.com/
+
+
+int main() {
+  printf("Hello, World!\n");
+  return 0;
+}

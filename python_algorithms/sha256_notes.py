@@ -1,6 +1,4 @@
-
-# Check out this stack overflow post for a python implementation of
-# SHA256:
+# Check out this stack overflow post for a python implementation of SHA256:
 # https://stackoverflow.com/questions/11937192/sha-256-pseuedocode
 #
 # Official SHA Standards:
