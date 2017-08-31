@@ -31,6 +31,11 @@ class Node():
     def __eq__(self, other):
         return type(other) == Node and other.value == self.value
 
+    def __repr__(self):
+        left = id(self.left) if self.left else None
+        right = id(self.right) if self.right else None
+        return 'Node(value=%d, left=%s, right=%s)' % (self.value, str(left), str(right))
+
 
 class BalancedTree():
 
@@ -43,62 +48,80 @@ class BalancedTree():
         else:
             return 1 + max(self.__height__(n.left), self.__height__(n.right))
 
-    def __balance__(self, n):
-        if not n:
-            return None
+    def __rotateright__(self, n):
+        n1 = n
+        n2 = n.left
+        t1 = n.left.right
 
-        h_l = self.__height__(n.left)
-        h_r = self.__height__(n.right)
-        # debug(context = DEBUG_CONTEXT)
-        if abs(h_l - h_r) > 1:
-            if h_l > h_r:
-                left = n.left
-                temp = left.right
-                left.right = n
-                n.left = temp
-                n = left
-
-            if h_l <= h_r:
-                right = n.right
-                temp = right.left
-                right.left = n
-                n.right = temp
-                n = right
+        n2.right = n1
+        n1.left = t1
+        n = n2
 
         return n
 
-    # TODO: Finish this modified algorithm
-    # def __leftmost__(self, n):
-    #     if n == None:
-    #         return None
-    #     elif n.left == None:
-    #         return n
-    #     else:
-    #         return self.__leftmost__(n.left)
-    #
-    # def __rightmost__(self, n):
-    #     if n == None:
-    #         return None
-    #     elif n.right == None:
-    #         return n
-    #     else:
-    #         return self.__rightmost__(n.right)
-    #
+    def __rotateleft__(self, n):
+        n1 = n
+        n2 = n.right
+        t1 = n.right.left
+
+        n2.left = n1
+        n1.right = t1
+        n = n2
+
+        return n
+
+    def __balancefactor__(self, n):
+        if n == None:
+            return 0
+        else:
+            # return self.__height__(n.left) - self.__height__(n.right)
+            return self.__height__(n.right) - self.__height__(n.left)
+
+    def __balance__(self, n):
+        if n == None:
+            return n
+
+        balancefactor = self.__balancefactor__(n)
+        # if balancefactor < -1:
+        if balancefactor < 0:
+            # Left heavy
+            if self.__balancefactor__(n.left) > 0:
+                n.left = self.__rotateleft__(n.left)
+            n = self.__rotateright__(n)
+        # elif balancefactor > 1:
+        elif balancefactor > 0:
+            # Right heavy
+            if self.__balancefactor__(n.right) < 0:
+                n.right = self.__rotateright__(n.right)
+            n = self.__rotateleft__(n)
+        else:
+            # Balanced
+            pass
+
+        return n
+
     # def __balance__(self, n):
-    #     if not n:
+    #     if n == None:
     #         return None
     #
     #     hl = self.__height__(n.left)
     #     hr = self.__height__(n.right)
+    #
     #     if abs(hl - hr) > 1:
     #         if hl > hr:
-    #             # Shift clockwise
-    #             n.left = temp = self.__rightmost__(n.left)
-    #             left = n.left
-    #
+    #             # Left-heavy; rotate right
+    #             if n.left.right != None:
+    #                 n.left = self.__rotateleft__(n.left)
+    #                 n = self.__rotateright__(n)
+    #             else:
+    #                 n = self.__rotateright__(n)
     #         else:
-    #             # Shift counter-clockwise
-    #             pass
+    #             # Right-heavy; rotate left
+    #             if n.right.left != None:
+    #                 n.right = self.__rotateright__(n.right)
+    #                 n = self.__rotateleft__(n)
+    #             else:
+    #                 n = self.__rotateleft__(n)
     #
     #     return n
 
@@ -112,46 +135,11 @@ class BalancedTree():
             n.left = self.__insert__(v, n.left)
         else:
             n.right = self.__insert__(v, n.right)
-        # debug(context = DEBUG_CONTEXT)
         return self.__balance__(n)
 
     def insert(self, v):
         self.root = self.__insert__(v, self.root)
         return self
-
-    # TODO: Come back to this
-    # def __remove__(self, v, n):
-    #     if not n:
-    #         return None
-    #     elif v == n.value:
-    #         # If both leaves are empty, just return null
-    #         # If left is empty, return leftmost element of right tree
-    #         # If right is empty, return rightmost element of left tree
-    #         # Finally, balance
-    #         if not n.left and not n.right:
-    #             return None
-    #         elif not n.left:
-    #             n_p = n.right
-    #             if n_p.left != None:
-    #                 while n_p.left.left != None:
-    #                     n_p = n_p.left
-    #                 temp = n_p.left
-    #                 n_p.left = None
-    #                 n_p = temp
-    #             else:
-    #
-    #             return self.__balance__(n_p)
-    #         else:
-    #             n_p = n
-    #             return self.__balance__(n_p)
-    #     elif v < n.value:
-    #         return self.__balance__(self.__remove__(v, n.left))
-    #     else:
-    #         return self.__balance__(self.__remove__(v, n.right))
-
-    # def remove(self, v):
-    #     self.root = self.__remove__(v, self.root)
-    #     return self
 
     def __find__(self, v, n):
         if not n:
@@ -182,7 +170,6 @@ class BalancedTree():
         return n
 
     def __debug_string__(self, n, tabspace):
-        # print('  %s* %d' % (' ' * (tabspace * 2), n.value))
         s = ['  %s* %d' % (' ' * (tabspace * 2), n.value)]
         if n.left:
             s += self.__debug_string__(n.left, tabspace + 1)
@@ -222,7 +209,7 @@ class TestBalancedTree(unittest.TestCase):
         else:
             return True
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_insert1(self):
         t = BalancedTree()
         n = 7
@@ -231,11 +218,13 @@ class TestBalancedTree(unittest.TestCase):
             v.append(i)
             t.insert(i)
 
+        h = t.height()
+        logh = int(math.log(n, 2))
         self.assertEqual(len(t), n)
-        self.assertEqual(t.height(), int(math.log(n, 2)))
+        self.assertTrue(logh <= h <= logh + 1)
         self.assertTrue(self.check(t, v))
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_insert2(self):
         t = BalancedTree()
         t.insert(1)
@@ -249,7 +238,7 @@ class TestBalancedTree(unittest.TestCase):
         self.assertEqual(t.root.right.value, 3)
         self.assertTrue(self.check(t, [1, 2, 3]))
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_insert3(self):
         for _ in range(50):
             t, n, v = random_balanced_tree()
@@ -257,7 +246,6 @@ class TestBalancedTree(unittest.TestCase):
 
             h = t.height()
             logh = math.floor(math.log(n, 2))
-            # print(' ** n = %d, h = %d, log(h, 2) = %f' % (n, h, logh))
             debug_string = """
 
  * Test Failed:
@@ -266,12 +254,11 @@ class TestBalancedTree(unittest.TestCase):
 
  * Tree:\n%s
 """ % (str(v), n, h, math.log(h, 2), t.debug_string())
-            # self.assertTrue(logh <= h <= logh + 1, msg = '\n\n * Test failed:\n ** input: "%s":\n ** n = %d, h = %d, log(h, 2) = %f' % (str(v), n, h, math.log(h, 2)))
 
             self.assertTrue(logh <= h <= logh + 1, msg=debug_string)
             self.assertTrue(self.check(t, v))
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_insert4(self):
         for i in range(1, 30 + 1):
             t = BalancedTree()
@@ -279,37 +266,27 @@ class TestBalancedTree(unittest.TestCase):
             for j in v:
                 t.insert(j)
 
-            # t.debug_print()
+            h = t.height()
+            logh = int(math.log(i, 2))
+
             self.assertEqual(len(t), i)
-            self.assertEqual(t.height(), int(math.log(i, 2)))
+            self.assertTrue(
+                logh <= h <= logh + 1, msg='\n\ni: %d\nh: %d\nlogh: %f\nTree:\n%s\n\n' % (i, h, math.log(i, 2), t.debug_string()))
             self.assertTrue(self.check(t, v))
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_insert5(self):
         t = BalancedTree()
         values = [849403, 818924, 865206, 69780, 154144, 464240, 642839,
                   439150, 966005, 519811, 637830, 728303, 880476, 77348, 524712]
         n = len(values)
         for i in values:
-            # debug(context = DEBUG_CONTEXT)
             t.insert(i)
-            # t.debug_print()
 
         h = t.height()
-        logh = int(math.log(h, 2))
+        logh = int(math.log(n, 2))
         self.assertEqual(len(t), n)
-        debug_string = """
-
-* Values: %s
-** n = %d
-** h = %d
-** log(h, 2) = %f
-
-* Tree:
-%s
-""" % (str(values), n, h, math.log(h, 2), t.debug_string())
-
-        self.assertTrue(logh <= h <= logh + 1, msg=debug_string)
+        self.assertTrue(logh <= h <= logh + 1)
         self.assertTrue(self.check(t, values))
 
     # @unittest.skip('Debugging')
@@ -319,11 +296,37 @@ class TestBalancedTree(unittest.TestCase):
         n = len(values)
         for i in values:
             t.insert(i)
+
         h = t.height()
-        logh = int(math.log(h, 2))
+        logh = int(math.log(n, 2))
         self.assertEqual(len(t), n)
+
         self.assertTrue(logh <= h <= logh + 1)
         self.assertTrue(self.check(t, values))
+
+    # @unittest.skip('Debugging')
+    def test_insert7(self):
+        t = BalancedTree()
+        n = 14
+        v = list(range(1, n + 1))
+        for i in v:
+            # print(' * Inserting %d' % i)
+            t.insert(i)
+
+        h = t.height()
+        logh = int(math.log(n, 2))
+        debug_string = """
+
+ * Test Failed:
+ ** input: "%s"
+ ** n = %d, h = %d, log(h, 2) = %f
+
+ * Tree:\n%s
+""" % (str(v), n, h, math.log(h, 2), t.debug_string())
+
+        self.assertEqual(len(t), n)
+        self.assertTrue(logh <= h <= logh + 1, msg=debug_string)
+        self.assertTrue(self.check(t, v))
 
     @unittest.skip('Debugging')
     def test_remove1(self):
