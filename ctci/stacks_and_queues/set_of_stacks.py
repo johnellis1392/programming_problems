@@ -1,13 +1,13 @@
-import unittest
-import random
 import math
-
+import random
+import unittest
+from collections import deque
 # Function for inspecting functions and classes:
 # You can use `signature(lambda i: i * 2).parameters` to
 # get a dictionary of values representing the parameter
 # mappings of the function.
-from inspect import signature, Signature
-from collections import deque
+from inspect import Signature, signature
+
 from ipdb import set_trace as debug
 
 
@@ -32,7 +32,6 @@ class SetOfStacks():
             self.stacks.pop()
         return v
 
-
     def isempty(self):
         return len(self.stacks) == 1 and len(self.stacks[0]) == 0
 
@@ -56,7 +55,7 @@ class TestSetOfStacks(unittest.TestCase):
 
     capacity = 12
 
-    def random_stack(range_bounds = (10, 50), number_bounds = (0, 10000), capacity = self.capacity):
+    def random_stack(self, range_bounds=(10, 50), number_bounds=(0, 10000), capacity=capacity):
         m, n = range_bounds
         i, j = number_bounds
         stack = SetOfStacks(capacity)
@@ -64,7 +63,6 @@ class TestSetOfStacks(unittest.TestCase):
         for _ in range(n):
             stack.push(random.randint(i, j))
         return stack, n
-
 
     # @unittest.skip('Debugging')
     def test1(self):
@@ -76,7 +74,6 @@ class TestSetOfStacks(unittest.TestCase):
         stack.pop()
         self.assertEqual(len(stack), 2)
 
-
     # @unittest.skip('Debugging')
     def test_push1(self):
         for _ in range(20):
@@ -84,18 +81,17 @@ class TestSetOfStacks(unittest.TestCase):
             # n = random.randint(10, 50)
             # for _ in range(n):
             #     stack.push(random.randint(0, 10000))
-            stack, n = self.random_stack(range_bounds = (10, 50))
+            stack, n = self.random_stack(range_bounds=(10, 50))
             # debug(context = 10)
 
             self.assertEqual(len(stack), n)
             self.assertEqual(len(stack.stacks), math.ceil(n / self.capacity))
             self.assertEqual(len(stack.stacks[-1]), n % self.capacity)
 
-
     def test_push2(self):
         for _ in range(20):
             size = 24
-            stack, n = self.random_stack(range_bounds = (size, size + 1))
+            stack, n = self.random_stack(range_bounds=(size, size + 1))
             self.assertEqual(len(stack), size)
             self.assertEqual(len(stack.stacks), 2)
             self.assertEqual(len(stack.stacks[0]), self.capacity)
@@ -106,7 +102,6 @@ class TestSetOfStacks(unittest.TestCase):
             self.assertEqual(len(stack), int(size / 2))
             self.assertEqual(len(stack.stacks), 1)
             self.assertEqual(len(stack.stacks[0]), self.capacity)
-
 
     def test_pop1(self):
         stack = SetOfStacks(self.capacity)
@@ -121,11 +116,10 @@ class TestSetOfStacks(unittest.TestCase):
         self.assertEqual(len(stack.stacks), 1)
         self.assertEqual(len(stack.stacks[0]), 0)
 
-
     def test_pop2(self):
         for _ in range(20):
             size = 24
-            stack, n = self.random_stack(range_bounds = (size, size + 1))
+            stack, n = self.random_stack(range_bounds=(size, size + 1))
             self.assertEqual(len(stack.stacks), 2)
 
             for i in range(int(size / 2)):
@@ -133,7 +127,6 @@ class TestSetOfStacks(unittest.TestCase):
             self.assertEqual(len(stack), int(size / 2))
             self.assertEqual(len(stack.stacks), 1)
             self.assertEqual(len(stack.stacks[0]), self.capacity)
-
 
     @unittest.skip('Debugging')
     def test_peek1(self):
@@ -144,7 +137,6 @@ class TestSetOfStacks(unittest.TestCase):
             v = random.randint(0, 10000)
             stack.push(v)
         self.assertEqual(stack.peek(), v)
-
 
     @unittest.skip('Debugging')
     def test_isempty1(self):

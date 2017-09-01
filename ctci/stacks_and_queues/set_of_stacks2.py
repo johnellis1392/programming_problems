@@ -8,8 +8,23 @@ __author__ = 'John Ellis'
 
 
 import collections
+import math
 import random
 import unittest
+
+
+def random_stack(capacity, range_bounds=(10, 50), number_bounds=(0, 10000)):
+    """
+    Generate random stack
+    """
+    i, j = range_bounds
+    lower_bound, upper_bound = number_bounds
+    stack = SetOfStacks(capacity)
+
+    length = random.randint(i, j)
+    for _ in range(length):
+        stack.push(random.randint(lower_bound, upper_bound))
+    return stack, length
 
 
 def random_array(range_bounds=(10, 30), value_bounds=(1, 1e6)):
@@ -50,6 +65,9 @@ class SetOfStacks():
 
     def __len__(self):
         return sum(map(len, self.stacks))
+
+    def __repr__(self):
+        return '[\t%s ]' % '\n\t'.join(map(str, self.stacks))
 
     def push(self, value):
         """
@@ -122,18 +140,142 @@ class SetOfStacks():
 
         return value
 
+    def isempty(self):
+        """
+        Determine if the stack is empty or not
+        """
+        return len(self.stacks) == 0
+
+    def peek(self):
+        """
+        Get top-most element of stack
+        """
+        if not self.stacks:
+            return None
+
+        return self.stacks[-1][-1]
+
 
 class TestSetOfStacks(unittest.TestCase):
     """
     Unit Tests for SetOfStacks
     """
 
-    @unittest.skip('Debugging')
+    capacity = 12
+
+    # @unittest.skip('Debugging')
     def test1(self):
         """
         Test simple case with SetOfStacks
         """
-        pass
+        stack = SetOfStacks(self.capacity)
+        stack.push(1)
+        stack.push(2)
+        stack.push(3)
+        self.assertEqual(len(stack), 3)
+        stack.pop()
+        self.assertEqual(len(stack), 2)
+
+    # @unittest.skip('Debugging')
+    def test_push1(self):
+        """
+        Test simple case with SetOfStacks
+        """
+
+        for _ in range(20):
+            stack, length = random_stack(self.capacity, range_bounds=(10, 50))
+
+            self.assertEqual(len(stack), length)
+            self.assertEqual(len(stack.stacks),
+                             math.ceil(length / self.capacity))
+            self.assertEqual(len(stack.stacks[-1]) % self.capacity,
+                             length % self.capacity)
+
+    def test_push2(self):
+        """
+        Test simple case with SetOfStacks
+        """
+
+        size = 24
+        stack, _ = random_stack(self.capacity,
+                                range_bounds=(size, size))
+        self.assertEqual(len(stack), size)
+        self.assertEqual(len(stack.stacks), 2)
+        self.assertEqual(len(stack.stacks[0]), self.capacity)
+        self.assertEqual(len(stack.stacks[1]), self.capacity)
+
+        for _ in range(int(size / 2)):
+            stack.pop()
+        self.assertEqual(len(stack), int(size / 2))
+        self.assertEqual(len(stack.stacks), 1)
+        self.assertEqual(len(stack.stacks[0]), self.capacity)
+
+    def test_pop1(self):
+        """
+        Test simple case with SetOfStacks
+        """
+
+        stack = SetOfStacks(self.capacity)
+        self.assertEqual(len(stack.stacks), 0)
+        stack.push(1)
+        self.assertEqual(len(stack.stacks), 1)
+        self.assertEqual(len(stack.stacks[0]), 1)
+        value = stack.pop()
+        self.assertEqual(value, 1)
+        self.assertEqual(len(stack.stacks), 0)
+
+    def test_pop2(self):
+        """
+        Test simple case with SetOfStacks
+        """
+
+        for _ in range(20):
+            size = 24
+            stack, original_values = random_stack(self.capacity,
+                                                  range_bounds=(size, size + 1))
+            self.assertEqual(len(stack.stacks), 2)
+
+            for i in range(size - 1):
+                value = stack.pop()
+                position = size - i - 1
+                self.assertEqual(original_values[position], value)
+                self.assertEqual(len(stack), position)
+                self.assertEqual(len(stack.stacks), int(
+                    position / self.capacity))
+                self.assertEqual(
+                    len(stack.stacks[-1]), int(position % self.capacity))
+
+            self.assertEqual(len(stack), 1)
+            self.assertEqual(stack.pop(), original_values[size - 1])
+            self.assertEqual(len(stack.stacks), 0)
+
+    @unittest.skip('Debugging')
+    def test_peek1(self):
+        """
+        Test simple case with SetOfStacks
+        """
+
+        stack = SetOfStacks(self.capacity)
+        length = random.randint(10, 50)
+        value = None
+        for _ in range(length):
+            value = random.randint(0, 10000)
+            stack.push(value)
+        self.assertEqual(stack.peek(), value)
+
+    @unittest.skip('Debugging')
+    def test_isempty1(self):
+        """
+        Test simple case with SetOfStacks
+        """
+
+        stack = SetOfStacks(self.capacity)
+        self.assertTrue(stack.isempty())
+        stack.push(1)
+        self.assertFalse(stack.isempty())
+        stack.pop()
+        # debug(context = 10)
+        self.assertTrue(stack.isempty())
 
 
 if __name__ == '__main__':
