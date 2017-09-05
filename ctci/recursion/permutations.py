@@ -8,7 +8,7 @@ __author__ = 'John Ellis'
 
 import unittest
 
-import ipdb
+# import ipdb
 
 
 def permutations(string):
