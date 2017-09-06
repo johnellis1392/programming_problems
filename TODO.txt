@@ -5,18 +5,17 @@ Problems to Finish:
 
 Arrays and Strings: 0
 Linked Lists: 0
-Stacks and Queues: 3
-* SetOfStacks
+Stacks and Queues: 2
 * Towers of Hanoi
 * Sort Stack
 Trees and Graphs: 8
 
-Subtotal: 12
+Subtotal: 11
 
 
 2. Concepts and Algorithms
 
-Bit Manipulation: 7
+Bit Manipulation: 3
 Brain Teasers: 6
 Object-Oriented Design: 10
 Recursion: 8
@@ -25,7 +24,7 @@ Mathematical: 7
 Testing: 6
 System Design and Memory Limits: 7
 
-Subtotal: 58
+Subtotal: 55
 
 
 3. Knowledge Based

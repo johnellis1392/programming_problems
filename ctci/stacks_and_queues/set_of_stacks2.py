@@ -12,6 +12,8 @@ import math
 import random
 import unittest
 
+# import ipdb
+
 
 def random_stack(capacity, range_bounds=(10, 50), number_bounds=(0, 10000)):
     """
@@ -21,10 +23,13 @@ def random_stack(capacity, range_bounds=(10, 50), number_bounds=(0, 10000)):
     lower_bound, upper_bound = number_bounds
     stack = SetOfStacks(capacity)
 
+    values = collections.deque()
     length = random.randint(i, j)
     for _ in range(length):
-        stack.push(random.randint(lower_bound, upper_bound))
-    return stack, length
+        value = random.randint(lower_bound, upper_bound)
+        values.append(value)
+        stack.push(value)
+    return stack, values
 
 
 def random_array(range_bounds=(10, 30), value_bounds=(1, 1e6)):
@@ -97,6 +102,7 @@ class SetOfStacks():
         if not self.stacks[-1]:
             # No elements left in last stack; remove
             self.stacks.pop()
+
         return value
 
     def pop_at(self, index):
@@ -114,13 +120,15 @@ class SetOfStacks():
 
         stack1 = self.stacks[i]
         temp_stack1 = collections.deque()
+        length = len(stack1)
         y_index = 0
 
         # Remove all elements in ith stack and place in temporary stack
-        while y_index < j:
+        while y_index < length - j:
             temp_stack1.append(stack1.pop())
             y_index += 1
-        value = stack1.pop()
+        # value = stack1.pop()
+        value = temp_stack1.pop()
 
         # Fill all elements back into stack
         while temp_stack1:
@@ -135,8 +143,11 @@ class SetOfStacks():
                        self.capacity)
             stack_index += 1
 
-        if not self.stacks[-1]:
-            self.stacks.pop()
+        # ipdb.set_trace(context=25)
+        if not self.stacks[i]:
+            # self.stacks.pop()
+            self.stacks = collections.deque(
+                list(self.stacks)[:i] + list(self.stacks)[i:])
 
         return value
 
@@ -183,7 +194,8 @@ class TestSetOfStacks(unittest.TestCase):
         """
 
         for _ in range(20):
-            stack, length = random_stack(self.capacity, range_bounds=(10, 50))
+            stack, values = random_stack(self.capacity, range_bounds=(10, 50))
+            length = len(values)
 
             self.assertEqual(len(stack), length)
             self.assertEqual(len(stack.stacks),
@@ -231,8 +243,9 @@ class TestSetOfStacks(unittest.TestCase):
 
         for _ in range(20):
             size = 24
-            stack, original_values = random_stack(self.capacity,
-                                                  range_bounds=(size, size + 1))
+            stack, original_values = random_stack(
+                self.capacity,
+                range_bounds=(size, size))
             self.assertEqual(len(stack.stacks), 2)
 
             for i in range(size - 1):
@@ -240,16 +253,18 @@ class TestSetOfStacks(unittest.TestCase):
                 position = size - i - 1
                 self.assertEqual(original_values[position], value)
                 self.assertEqual(len(stack), position)
-                self.assertEqual(len(stack.stacks), int(
-                    position / self.capacity))
                 self.assertEqual(
-                    len(stack.stacks[-1]), int(position % self.capacity))
+                    len(stack.stacks),
+                    math.ceil(position / self.capacity))
+                self.assertEqual(
+                    len(stack.stacks[-1]) % self.capacity,
+                    int(position % self.capacity))
 
             self.assertEqual(len(stack), 1)
-            self.assertEqual(stack.pop(), original_values[size - 1])
+            self.assertEqual(stack.pop(), original_values[0])
             self.assertEqual(len(stack.stacks), 0)
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_peek1(self):
         """
         Test simple case with SetOfStacks
@@ -263,7 +278,7 @@ class TestSetOfStacks(unittest.TestCase):
             stack.push(value)
         self.assertEqual(stack.peek(), value)
 
-    @unittest.skip('Debugging')
+    # @unittest.skip('Debugging')
     def test_isempty1(self):
         """
         Test simple case with SetOfStacks
@@ -274,8 +289,50 @@ class TestSetOfStacks(unittest.TestCase):
         stack.push(1)
         self.assertFalse(stack.isempty())
         stack.pop()
-        # debug(context = 10)
         self.assertTrue(stack.isempty())
+
+    @unittest.skip('Debugging')
+    def test_pop_at1(self):
+        """
+        Test pop_at pops correct value
+        """
+
+        stack = SetOfStacks(self.capacity)
+        for i in [1, 2, 3]:
+            stack.push(i)
+        self.assertEqual(len(stack), 3)
+
+        for j in [1, 2, 3]:
+            value = stack.pop_at(0)
+            self.assertEqual(value, j)
+        self.assertEqual(len(stack), 0)
+
+    def test_pop_at2(self):
+        """
+        Test pop_at with random data
+        """
+
+        iterations = 10
+        length = self.capacity * iterations
+        stack, values = random_stack(
+            self.capacity,
+            range_bounds=(length, length))
+        for i in range(iterations):
+            self.assertEqual(len(stack.stacks), iterations - i)
+            for j in range(self.capacity):
+                value = stack.pop_at(0)
+                self.assertEqual(value, values[i * self.capacity + j])
+            print(stack)
+            self.assertEqual(len(stack.stacks), iterations - i - 1)
+
+        # stack, values = random_stack(
+        #     self.capacity,
+        #     range_bounds=(length, length))
+        # for expected in values:
+        #     value = stack.pop_at(0)
+        #     print(value)
+        #     self.assertEqual(expected, value)
+        # self.assertEqual(0, len(stack))
 
 
 if __name__ == '__main__':
