@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rm ./*.class
+# javac "./$1.java" && java "$1"
+
+/usr/local/Cellar/openjdk@17/17.0.6/bin/javac "./$1.java" && \
+    /usr/local/Cellar/openjdk@17/17.0.6/bin/java "$1"

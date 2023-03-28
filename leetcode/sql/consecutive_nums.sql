@@ -8,6 +8,35 @@ insert into Logs (id, num) values ('5', '1');
 insert into Logs (id, num) values ('6', '2');
 insert into Logs (id, num) values ('7', '2');
 
+-- Write an SQL query to find all numbers that appear at least three times consecutively.
+-- 
+-- Return the result table in any order.
+-- 
+-- The query result format is in the following example.
+
+select
+  num as ConsecutiveNums,
+  -- count(*) over (partition by num) as "rank"
+  rank() over (order by id) as "rank"
+from
+  Logs
+;
+
+-- MySQL solution
+select
+  num,
+  @seq_num :=
+    case 
+      when @prev = num then @seq_num
+      else @seq_num + 1
+    end as seq_num,
+  @prev := num as prev
+from
+  logs,
+  (select @seq_num := 0) _seq_num,
+  (select @prev := -1) _prev
+;
+
 -- select
 --   num,
 --   seq_num,
