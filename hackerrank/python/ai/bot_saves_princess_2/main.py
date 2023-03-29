@@ -82,7 +82,6 @@ def nextMove(n, r, c, grid):
     move_s = "RIGHT"
   else:
     raise Exception("Invalid Move %s" % ((dr, dc)))
-  # print(move_s)
   return move_s
 
 if __name__ == '__main__':
