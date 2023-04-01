@@ -1,3 +1,5 @@
+from collections import deque, defaultdict
+
 WALL = '#'
 BOMB = '*'
 EXIT = '%'
@@ -6,19 +8,25 @@ OPEN = 'O'
 def mean(*vs):
   return float(sum(vs)) / len(vs)
 
-def startingpoint(grid):
+def find_in_grid(grid, sigil):
   for i in range(len(grid)):
     for j in range(len(grid[i])):
-      if grid[i][j] == 'A':
+      if grid[i][j] == sigil:
         return i, j
   return None
+
+def startingpoint(grid):
+  return find_in_grid(grid, 'A')
+
+def destinationpoint(grid):
+  return find_in_grid(grid, '%')
 
 def adjs(n, m, r, c):
   def valid(i, j):
     return (0<=i and i<n) and (0<=j and j<m)
   return list(filter(lambda x: valid(*x), [(r-1,c), (r+1,c), (r,c-1), (r,c+1)]))
 
-def main(n, m, grid, warps):
+def main_v1(n, m, grid, warps):
   wins = 0
   losses = 0
   seen = set()
@@ -52,6 +60,30 @@ def main(n, m, grid, warps):
     return 0
   else:
     return float(wins) / total
+
+def main(n, m, grid, warps):
+  distance = defaultdict(int)
+  paths = defaultdict(int)
+  queue = deque()
+  S = startingpoint(grid)
+  D = destinationpoint(grid)
+  queue.append(S)
+  distance[S] = 0
+  paths[S] = 1
+  visited = set()
+  while queue:
+    current = queue.popleft()
+    r, c = current
+    for child in adjs(n, m, r, c):
+      if child not in visited:
+        queue.append(child)
+        visited.add(child)
+      if distance[child] > distance[current]+1:
+        distance[child] = distance[current]+1
+        paths[child] = paths[current]
+      elif distance[child] == distance[current]+1:
+        paths[child] = paths[child] + paths[current]
+  return paths[D]
 
 if __name__ == '__main__':
   filename = 'input.4.txt'
