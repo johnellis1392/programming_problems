@@ -1,3 +1,5 @@
+import java.math.BigInteger;
+
 public class MyAtoi {
   public record Test(
     String input,
@@ -24,7 +26,7 @@ public class MyAtoi {
       sign = 1;
     }
 
-    int result = 0;
+    Long result = 0L;
     while (
       i < s.length() &&
       Character.isDigit(s.charAt(i))
@@ -32,17 +34,24 @@ public class MyAtoi {
       var v = (int)(s.charAt(i) - '0');
       result = result * 10 + v;
       i++;
+      System.out.printf("result=%d\n", result);
     }
-    return result * sign;
+    // return result * sign;
+    if (sign > 0) {
+      return (int)(result % ((long)Math.pow(2, 31)-1));
+    } else {
+      return (int)((-1 * result) % ((long)Math.pow(-2, 31)));
+    }
   }
 
   public static void main(final String[] args) {
     var main = new MyAtoi();
     final var tests = new Test[] {
-      new Test("42", 42),
-      new Test("   -42", -42),
-      new Test("4193 with words", 4193),
-      new Test("words and 987", 0)
+      // new Test("42", 42),
+      // new Test("   -42", -42),
+      // new Test("4193 with words", 4193),
+      // new Test("words and 987", 0),
+      new Test("-91283472332", 0),
     };
 
     for (var test : tests) {

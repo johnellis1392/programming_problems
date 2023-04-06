@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
 
 rm ./*.class > /dev/null
-javac "$1.java" && java "$1"
+clear && javac "$1.java" && java "$1"
+last_modified="$(date -r $1.java)"
+while [ 1 ]; do
+  modified="$(date -r $1.java)"
+  if [[ $last_modified != $modified ]]; then
+    last_modified=$modified
+    clear && javac "$1.java" && java "$1"
+  else
+    sleep 1
+  fi
+done
