@@ -5,3 +5,5 @@
 .lsp
 .nrepl-port
 **/*.cpcache
+.metals
+.vscode
