@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+if [ $# -eq 0 ]; then
+  echo "No filename specified";
+  exit 1;
+fi
+
+filename="$1"
+if [ ! -e "$filename.cs" ]; then
+  echo "File $filename.cs not found";
+  exit 1;
+fi
+
+csc $filename.cs
+if [ -e $filename.exe ]; then
+  mono $filename.exe;
+  rm $filename.exe;
+fi
