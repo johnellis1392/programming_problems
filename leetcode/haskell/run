@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+if [ $# -ne 1 ]; then
+  echo "No filename specified";
+  exit 1;
+fi
+
+filename="$1";
+if [ ! -e "$1.hs" ]; then
+  echo "File '$1.hs' does not exist";
+  exit 1;
+fi
+
+ghc "$filename.hs" -o "$filename" && ./$filename
+if [ -e "$filename" ]; then
+  rm "$filename" "$filename.o" "$filename.hi"
+fi
