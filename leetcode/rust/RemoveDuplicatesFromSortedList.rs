@@ -60,6 +60,21 @@ fn to_list(a: &[i32]) -> Option<Box<ListNode>> {
   }
 }
 
+// Another solution on LeetCode, using while loop pattern matching
+fn delete_duplicates2(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+  if head.is_none() { return None; }
+  let mut h: Option<Box<ListNode>> = head;
+  let mut p1: &mut Box<ListNode> = h.as_mut().unwrap();
+  while let Some(p2) = p1.next.as_mut() {
+    if p1.val == p2.val {
+      p1.next == p2.next.take();
+    } else {
+      p1 = p1.next.as_mut().unwrap();
+    }
+  }
+  h
+}
+
 fn delete_duplicates(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
   fn f(node: Option<Box<ListNode>>, last: i32) -> Option<Box<ListNode>> {
     match node {
