@@ -1,14 +1,4 @@
-// use std::Math;
 use std::cmp;
-
-struct Test(&'static str, &'static str, &'static str);
-
-const TESTS: &[Test] = &[
-  Test("11", "1", "100"),
-  Test("1010", "1011", "10101"),
-  Test("0", "0", "0"),
-  Test("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101", "110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011", "110111101100010011000101110110100000011101000101011001000011011000001100011110011010010011000000000"),
-];
 
 struct _Solution1 {}
 impl _Solution1 {
@@ -65,7 +55,7 @@ impl _Solution2 {
   }
 }
 
-fn add_binary(a: String, b: String) -> String {
+pub fn add_binary(a: String, b: String) -> String {
   let n = cmp::max(a.len(), b.len());
   let (mut x, mut y) = (vec![0; n], vec![0; n]);
   for (i, c) in a.chars().rev().enumerate() { x[n-i-1] = if c == '0' { 0 } else { 1 }; }
@@ -83,14 +73,40 @@ fn add_binary(a: String, b: String) -> String {
   return z.iter().map(|c| if *c == 0 { '0' } else { '1' }).collect()
 }
 
-fn main() {
-  println!("Running...");
-  for Test(a, b, o) in TESTS {
-    let r = add_binary(a.to_string(), b.to_string());
-    if r == o.to_string() {
-      println!("Success");
-    } else {
-      println!("Failure: \"{}\" != \"{}\"", r, o);
-    }
+
+#[cfg(test)]
+pub mod tests {
+  use super::*;
+
+  #[test]
+  fn test1() {
+    let a = "11".to_string();
+    let b = "1".to_string();
+    let exp = "100".to_string();
+    assert_eq!(exp, add_binary(a, b))
+  }
+
+  #[test]
+  fn test2() {
+    let a = "1010".to_string();
+    let b = "1011".to_string();
+    let exp = "10101".to_string();
+    assert_eq!(exp, add_binary(a, b))
+  }
+
+  #[test]
+  fn test3() {
+    let a = "0".to_string();
+    let b = "0".to_string();
+    let exp = "0".to_string();
+    assert_eq!(exp, add_binary(a, b))
+  }
+
+  #[test]
+  fn test4() {
+    let a = "10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101".to_string();
+    let b = "110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011".to_string();
+    let exp = "110111101100010011000101110110100000011101000101011001000011011000001100011110011010010011000000000".to_string();
+    assert_eq!(exp, add_binary(a, b))
   }
 }

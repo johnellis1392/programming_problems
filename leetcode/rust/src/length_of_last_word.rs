@@ -1,10 +1,3 @@
-struct Test(&'static str, i32);
-
-const TESTS: [Test; 3] = [
-  Test("Hello World", 5),
-  Test("   fly me   to   the moon  ", 4),
-  Test("luffy is still joyboy", 6),
-];
 
 fn length_of_last_word(s: String) -> i32 {
   let bytes: &[u8] = s.as_bytes();
@@ -19,21 +12,30 @@ fn length_of_last_word(s: String) -> i32 {
 }
 
 // A clever, idiomatic solution from LeetCode
-fn length_of_last_word2(s: String) -> i32 {
+fn _length_of_last_word2(s: String) -> i32 {
   match s.trim().split_whitespace().last() {
     Some(w) => w.len() as i32,
     None => 0,
   }
 }
 
-fn main() {
-  println!("Running...");
-  for Test(s, exp) in TESTS {
-    let res = length_of_last_word(String::from(s));
-    if res == exp {
-      println!("Success")
-    } else {
-      println!("Failure: {} != {}", res, exp)
-    }
+
+#[cfg(test)]
+pub mod tests {
+  use super::*;
+
+  #[test]
+  fn test1() { 
+    assert_eq!(length_of_last_word("Hello World".to_string()), 5);
+  }
+
+  #[test]
+  fn test2() { 
+    assert_eq!(length_of_last_word("   fly me   to   the moon  ".to_string()), 4);
+  }
+
+  #[test]
+  fn test3() { 
+    assert_eq!(length_of_last_word("luffy is still joyboy".to_string()), 6);
   }
 }
