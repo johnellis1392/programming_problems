@@ -6,17 +6,6 @@ import (
 	"strings"
 )
 
-type Test struct {
-	s string
-	o int
-}
-
-var tests = []Test{
-	{"Hello World", 5},
-	{"   fly me   to   the moon  ", 4},
-	{"luffy is still joyboy", 6},
-}
-
 func format(s []string) string {
 	var sb strings.Builder
 	sb.WriteString("[")
@@ -30,7 +19,7 @@ func format(s []string) string {
 	return sb.String()
 }
 
-func lengthOfLastWord(s string) int {
+func LengthOfLastWord(s string) int {
 	splits := regexp.MustCompile("\\s+").
 		Split(strings.Trim(s, " "), -1)
 	if len(splits) == 0 {
@@ -62,14 +51,14 @@ func lengthOfLastWord3(s string) int {
 	return n
 }
 
-func main() {
-	fmt.Println("Running...")
-	for _, t := range tests {
-		res := lengthOfLastWord(t.s)
-		if res == t.o {
-			fmt.Println("Success")
-		} else {
-			fmt.Printf("Failure: %v != %v\n", res, t.o)
-		}
-	}
-}
+// func main() {
+// 	fmt.Println("Running...")
+// 	for _, t := range tests {
+// 		res := LengthOfLastWord(t.s)
+// 		if res == t.o {
+// 			fmt.Println("Success")
+// 		} else {
+// 			fmt.Printf("Failure: %v != %v\n", res, t.o)
+// 		}
+// 	}
+// }
