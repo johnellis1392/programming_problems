@@ -1,3 +1,5 @@
+# Problem 1: Multiples of Three or Five
+# (AKA FizzBuzz)
 def main():
     Sum = 0
     for i in range(1000):
