@@ -8,6 +8,7 @@ mod binary_tree_depth;
 mod binary_tree_inorder_traversal;
 mod binary_tree_minimum_depth;
 mod binary_tree_path_sum;
+mod binary_tree_path_sum_2;
 mod climbing_stairs;
 mod length_of_last_word;
 mod merge_sorted_arrays;
