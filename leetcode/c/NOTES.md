@@ -1,0 +1,3 @@
+- `xxd`: Command for dumping hex of compiled files
+- `objdump`: Command for dumping disassembled executables
+ - use `objdump -d -Mintel [filename]` for dumping on intel arch
