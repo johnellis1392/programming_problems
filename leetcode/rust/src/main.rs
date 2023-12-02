@@ -4,6 +4,7 @@ mod list;
 mod add_binary;
 // mod array_to_binary_tree;
 mod balanced_binary_tree;
+mod binary_tree_flatten_to_linked_list;
 mod binary_tree_depth;
 mod binary_tree_inorder_traversal;
 mod binary_tree_minimum_depth;

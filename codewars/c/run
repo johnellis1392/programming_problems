@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [ ! $# -eq 1 ]; then
+  echo "No filename specified";
+  exit 1;
+fi
+if [ ! -f "$1.c" ]; then
+  echo "File '$1.c' does not exist";
+  exit 1;
+fi
+
+gcc "$1.c" -o "$1" && ./"$1"
+if [ -e "$1" ]; then
+  rm "$1";
+fi

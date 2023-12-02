@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+if [ $# -eq 0 ]; then
+  echo "No filename specified";
+  exit 1;
+fi
+
+filename="$1";
+if [ ! -e "$filename.asm" ]; then
+  echo "File '$filename.asm' does not exist";
+  exit 1;
+fi
+
+# Mac 64-bit
+# nasm -fmacho64 "$filename.asm" && \
+#   ld "$filename.o" -arch x86_64 && \
+#   ./a.out
+
+# Linux 32-bit w/gcc
+# nasm -f elf -g "$filename.asm" && \
+#   gcc -m32 -g "$filename.o" && \
+#   ./a.out
+
+# Linux 64-bit w/gcc
+# nasm -f elf64 -g "$filename.asm" && \
+#   gcc -g -no-pie "$filename.o" && \
+#   ./a.out
+
+# Linux 64-bit
+nasm -f elf64 -g "$filename.asm" && \
+  ld "$filename.o" && \
+  ./a.out
+
+if [ -e "$filename.o" ]; then
+  rm "$filename.o";
+fi
+if [ -e "./a.out" ]; then
+  rm "./a.out";
+fi
