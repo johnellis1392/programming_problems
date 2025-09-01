@@ -1,0 +1,136 @@
+name: haskell
+version: 0.1.0.0
+github: "githubuser/haskell"
+license: BSD-3-Clause
+author: "Author name here"
+maintainer: "example@example.com"
+copyright: "2023 Author name here"
+
+extra-source-files:
+  - README.md
+  - CHANGELOG.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description: Please see the README on GitHub at <https://github.com/githubuser/haskell#readme>
+
+dependencies:
+  - base >= 4.7 && < 5
+
+ghc-options:
+  - -Wall
+  - -Wcompat
+  - -Widentities
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wmissing-export-lists
+  - -Wmissing-home-modules
+  - -Wpartial-fields
+  - -Wredundant-constraints
+  - -Wno-incomplete-uni-patterns
+  - -Wno-unused-do-bind
+
+default-extensions:
+  - Arrows
+  - BangPatterns
+  - BinaryLiterals
+  - DataKinds
+  - DeriveFoldable
+  - DeriveFunctor
+  - DeriveLift
+  - DeriveGeneric
+  - DeriveTraversable
+  - DerivingStrategies
+  - DuplicateRecordFields
+  - EmptyCase
+  - ExistentialQuantification
+  - FunctionalDependencies
+  - GADTs
+  - GADTSyntax
+  - ImportQualifiedPost
+  - InstanceSigs
+  - LambdaCase
+  - MonadComprehensions
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NumDecimals
+  - NumericUnderscores
+  - NamedFieldPuns
+  # - OverloadedLists
+  - OverloadedRecordDot
+  - OverloadedRecordUpdate
+  - OverloadedStrings
+  - PatternSynonyms
+  - QuasiQuotes
+  - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TemplateHaskell
+  - TupleSections
+  - TypeApplications
+  - TypeFamilies
+  - TypeOperators
+  - ViewPatterns
+
+library:
+  source-dirs: src
+  dependencies:
+    - text
+    - containers
+    - pureMD5
+    - bytestring
+    - time
+    - array
+    - extra
+    - raw-strings-qq
+    - unordered-containers
+    - parsec
+    - hashable
+    - http-client
+    - http-conduit
+    - directory
+
+executables:
+  aoc-hs-exe:
+    main: Main.hs
+    source-dirs: app
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - haskell
+      - text
+      - containers
+      - pureMD5
+      - bytestring
+      - time
+      - array
+      - extra
+      - hspec
+      - hashable
+
+tests:
+  aoc-hs-test:
+    main: Spec.hs
+    # main:                hspec/hspec@main
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+    dependencies:
+      - haskell
+      - hspec
+      - QuickCheck
+      - text
+      - raw-strings-qq
+      - parsec
+      - hashable
+      - array
+      - extra

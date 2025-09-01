@@ -1,0 +1,297 @@
+cabal-version: 2.2
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           aoc-hs
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/aoc-hs#readme>
+homepage:       https://github.com/githubuser/aoc-hs#readme
+bug-reports:    https://github.com/githubuser/aoc-hs/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2023 Author name here
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/aoc-hs
+
+library
+  exposed-modules:
+      AOC2015.Day1
+      AOC2015.Day10
+      AOC2015.Day2
+      AOC2015.Day3
+      AOC2015.Day4
+      AOC2015.Day5
+      AOC2015.Day6
+      AOC2015.Day7
+      AOC2015.Day8
+      AOC2015.Day9
+      AOC2020.Day1
+      AOC2020.Day10
+      AOC2020.Day11
+      AOC2020.Day12
+      AOC2020.Day13
+      AOC2020.Day14
+      AOC2020.Day2
+      AOC2020.Day3
+      AOC2020.Day4
+      AOC2020.Day5
+      AOC2020.Day6
+      AOC2020.Day7
+      AOC2020.Day8
+      AOC2020.Day9
+      AOC2024.Day1
+      AOC2024.Day10
+      AOC2024.Day11
+      AOC2024.Day12
+      AOC2024.Day13
+      AOC2024.Day14
+      AOC2024.Day2
+      AOC2024.Day3
+      AOC2024.Day4
+      AOC2024.Day5
+      AOC2024.Day6
+      AOC2024.Day7
+      AOC2024.Day8
+      AOC2024.Day9
+      Common.Day
+      Common.Grid
+      Common.Points
+      Common.Profiling
+      Common.Utils
+      Scripts.FetchInput
+  other-modules:
+      Paths_aoc_hs
+  autogen-modules:
+      Paths_aoc_hs
+  hs-source-dirs:
+      src
+  default-extensions:
+      Arrows
+      BangPatterns
+      BinaryLiterals
+      DataKinds
+      DeriveFoldable
+      DeriveFunctor
+      DeriveLift
+      DeriveGeneric
+      DeriveTraversable
+      DerivingStrategies
+      DuplicateRecordFields
+      EmptyCase
+      ExistentialQuantification
+      FunctionalDependencies
+      GADTs
+      GADTSyntax
+      ImportQualifiedPost
+      InstanceSigs
+      LambdaCase
+      MonadComprehensions
+      MultiParamTypeClasses
+      MultiWayIf
+      NumDecimals
+      NumericUnderscores
+      NamedFieldPuns
+      OverloadedRecordDot
+      OverloadedRecordUpdate
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      ViewPatterns
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-incomplete-uni-patterns -Wno-unused-do-bind
+  build-depends:
+      array
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , directory
+    , extra
+    , hashable
+    , http-client
+    , http-conduit
+    , parsec
+    , pureMD5
+    , raw-strings-qq
+    , text
+    , time
+    , unordered-containers
+  default-language: Haskell2010
+
+executable aoc-hs-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_aoc_hs
+  autogen-modules:
+      Paths_aoc_hs
+  hs-source-dirs:
+      app
+  default-extensions:
+      Arrows
+      BangPatterns
+      BinaryLiterals
+      DataKinds
+      DeriveFoldable
+      DeriveFunctor
+      DeriveLift
+      DeriveGeneric
+      DeriveTraversable
+      DerivingStrategies
+      DuplicateRecordFields
+      EmptyCase
+      ExistentialQuantification
+      FunctionalDependencies
+      GADTs
+      GADTSyntax
+      ImportQualifiedPost
+      InstanceSigs
+      LambdaCase
+      MonadComprehensions
+      MultiParamTypeClasses
+      MultiWayIf
+      NumDecimals
+      NumericUnderscores
+      NamedFieldPuns
+      OverloadedRecordDot
+      OverloadedRecordUpdate
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      ViewPatterns
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-incomplete-uni-patterns -Wno-unused-do-bind -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aoc-hs
+    , array
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , extra
+    , hashable
+    , hspec
+    , pureMD5
+    , text
+    , time
+  default-language: Haskell2010
+
+test-suite aoc-hs-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      AOC2015.Day10Spec
+      AOC2015.Day1Spec
+      AOC2015.Day2Spec
+      AOC2015.Day3Spec
+      AOC2015.Day5Spec
+      AOC2015.Day6Spec
+      AOC2015.Day8Spec
+      AOC2015.Day9Spec
+      AOC2020.Day10Spec
+      AOC2020.Day11Spec
+      AOC2020.Day12Spec
+      AOC2020.Day13Spec
+      AOC2020.Day14Spec
+      AOC2020.Day1Spec
+      AOC2020.Day2Spec
+      AOC2020.Day3Spec
+      AOC2020.Day4Spec
+      AOC2020.Day5Spec
+      AOC2020.Day6Spec
+      AOC2020.Day7Spec
+      AOC2020.Day8Spec
+      AOC2020.Day9Spec
+      AOC2024.Day10Spec
+      AOC2024.Day11Spec
+      AOC2024.Day12Spec
+      AOC2024.Day13Spec
+      AOC2024.Day14Spec
+      AOC2024.Day1Spec
+      AOC2024.Day2Spec
+      AOC2024.Day3Spec
+      AOC2024.Day4Spec
+      AOC2024.Day5Spec
+      AOC2024.Day6Spec
+      AOC2024.Day7Spec
+      AOC2024.Day8Spec
+      AOC2024.Day9Spec
+      Paths_aoc_hs
+  autogen-modules:
+      Paths_aoc_hs
+  hs-source-dirs:
+      test
+  default-extensions:
+      Arrows
+      BangPatterns
+      BinaryLiterals
+      DataKinds
+      DeriveFoldable
+      DeriveFunctor
+      DeriveLift
+      DeriveGeneric
+      DeriveTraversable
+      DerivingStrategies
+      DuplicateRecordFields
+      EmptyCase
+      ExistentialQuantification
+      FunctionalDependencies
+      GADTs
+      GADTSyntax
+      ImportQualifiedPost
+      InstanceSigs
+      LambdaCase
+      MonadComprehensions
+      MultiParamTypeClasses
+      MultiWayIf
+      NumDecimals
+      NumericUnderscores
+      NamedFieldPuns
+      OverloadedRecordDot
+      OverloadedRecordUpdate
+      OverloadedStrings
+      PatternSynonyms
+      QuasiQuotes
+      RecordWildCards
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      ViewPatterns
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -Wno-incomplete-uni-patterns -Wno-unused-do-bind -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      QuickCheck
+    , aoc-hs
+    , array
+    , base >=4.7 && <5
+    , extra
+    , hashable
+    , hspec
+    , parsec
+    , raw-strings-qq
+    , text
+  default-language: Haskell2010
