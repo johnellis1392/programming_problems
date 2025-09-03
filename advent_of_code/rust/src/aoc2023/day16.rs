@@ -4,6 +4,7 @@ use std::cmp::{max};
 use std::ops::{Index};
 use std::collections::{HashSet};
 use std::cmp::{PartialEq};
+use crate::common::day::Day;
 
 #[derive(Eq, Hash, PartialEq)]
 enum Direction {
@@ -152,49 +153,25 @@ fn read_input(input: &String) -> Grid {
   Grid::new(matrix)
 }
 
-fn part1(input: &String) -> u64 {
-  let grid = read_input(input);
-  let origin = Point::new(0, 0);
-  let original_heading = Direction::East;
-  let mut visited = HashSet::<Vector>::new();
-  let mut queue = Vec::<Vector>::new();
-  queue.push(Vector::new(origin, original_heading));
 
-  while !queue.is_empty() {
-    let v = queue.remove(0);
-    let current = &v.p;
-    let heading = &v.d;
-    if grid.valid(current) && !visited.contains(&v) {
-      visited.insert(v);
-      let mut points = grid.mv(current, heading);
-      queue.append(&mut points);
-    }
+struct Day16;
+
+impl Day for Day16 {
+  type Input = String;
+  type Output = u64;
+  fn day() -> u32 { 16 }
+  fn year() -> u32 { 2023 }
+  
+  fn parse_input(input: String) -> Self::Input {
+    input.trim().to_string()
   }
-
-  visited.iter().map(|v| v.p).collect::<HashSet<Point>>().len() as u64
-}
-
-fn part2(input: &String) -> u64 {
-  let grid = read_input(input);
-  let width = grid.width();
-  let height = grid.height();
-  let mut origins = Vec::<Vector>::new();
-  for r in 0..height {
-    origins.push(Vector::new(Point::new(r, 0), Direction::East));
-    origins.push(Vector::new(Point::new(r, width - 1), Direction::West));
-  }
-  for c in 0..width {
-    origins.push(Vector::new(Point::new(0, c), Direction::South));
-    origins.push(Vector::new(Point::new(height - 1, c), Direction::North));
-  }
-
-  let mut visited = HashSet::<Vector>::new();
-  let mut queue = Vec::<Vector>::new();
-
-  let mut res = 0u64;
-  for vector in origins {
-    let origin = vector.p;
-    let original_heading = vector.d;
+  
+  fn part1(input: &String) -> u64 {
+    let grid = read_input(input);
+    let origin = Point::new(0, 0);
+    let original_heading = Direction::East;
+    let mut visited = HashSet::<Vector>::new();
+    let mut queue = Vec::<Vector>::new();
     queue.push(Vector::new(origin, original_heading));
 
     while !queue.is_empty() {
@@ -208,38 +185,61 @@ fn part2(input: &String) -> u64 {
       }
     }
 
-    let energy = visited.iter().map(|v| v.p).collect::<HashSet<Point>>().len() as u64;
-    res = max(res, energy);
-
-    visited.clear();
-    queue.clear();
+    visited.iter().map(|v| v.p).collect::<HashSet<Point>>().len() as u64
   }
 
-  res
+  fn part2(input: &String) -> u64 {
+    let grid = read_input(input);
+    let width = grid.width();
+    let height = grid.height();
+    let mut origins = Vec::<Vector>::new();
+    for r in 0..height {
+      origins.push(Vector::new(Point::new(r, 0), Direction::East));
+      origins.push(Vector::new(Point::new(r, width - 1), Direction::West));
+    }
+    for c in 0..width {
+      origins.push(Vector::new(Point::new(0, c), Direction::South));
+      origins.push(Vector::new(Point::new(height - 1, c), Direction::North));
+    }
+
+    let mut visited = HashSet::<Vector>::new();
+    let mut queue = Vec::<Vector>::new();
+
+    let mut res = 0u64;
+    for vector in origins {
+      let origin = vector.p;
+      let original_heading = vector.d;
+      queue.push(Vector::new(origin, original_heading));
+
+      while !queue.is_empty() {
+        let v = queue.remove(0);
+        let current = &v.p;
+        let heading = &v.d;
+        if grid.valid(current) && !visited.contains(&v) {
+          visited.insert(v);
+          let mut points = grid.mv(current, heading);
+          queue.append(&mut points);
+        }
+      }
+
+      let energy = visited.iter().map(|v| v.p).collect::<HashSet<Point>>().len() as u64;
+      res = max(res, energy);
+
+      visited.clear();
+      queue.clear();
+    }
+
+    res
+  }
 }
 
-fn main() {
-  let filename = "input.txt";
-  let debug = false;
-  let test_input = r"
-    .|...\....
-    |.-.\.....
-    .....|-...
-    ........|.
-    ..........
-    .........\
-    ..../.\\..
-    .-.-/..|..
-    .|....-|.\
-    ..//.|....
-  ";
 
-  let input = if debug { 
-    test_input.to_owned()
-  } else {
-    fs::read_to_string(filename).expect("An error occurred while reading file")
-  };
+pub mod tests {
+  use crate::aoc2023::day16::Day16;
+  use crate::common::day::Day;
 
-  println!("2023 Day 16, Part 1: {}", part1(&input));
-  println!("2023 Day 16, Part 2: {}", part2(&input));
+  #[test]
+  fn run() {
+    Day16::run()
+  }
 }

@@ -1,6 +1,7 @@
 use std::fs;
 use std::collections::{HashSet};
 use std::fmt;
+use crate::common::day::Day;
 
 // #[derive(PartialEq, Debug)]
 struct Point {
@@ -47,31 +48,31 @@ impl Grid {
       } else {
         vec![]
       }).collect::<HashSet<usize>>();
-      
+
     let galaxies: Vec<Point> = matrix.iter()
       .enumerate()
       .flat_map(|(r, row)| {
         row.iter().enumerate().flat_map(|(c, col)| {
           if *col == "#" {
-            vec![Point{r: r as i64, c: c as i64}]
+            vec![Point { r: r as i64, c: c as i64 }]
           } else {
             vec![]
           }
         }).collect::<Vec<Point>>()
       }).collect::<Vec<Point>>();
-      
+
     Grid {
       matrix: matrix,
       null_rows: null_rows,
       null_cols: null_cols,
       galaxies: galaxies,
-      expanse: expanse.unwrap_or(2)
+      expanse: expanse.unwrap_or(2),
     }
   }
 
   fn shortest_path(&self, from: &Point, to: &Point) -> u64 {
-    let mut current = Point{r: from.r, c: from.c};
-    let dest = Point{r: to.r, c: to.c};
+    let mut current = Point { r: from.r, c: from.c };
+    let dest = Point { r: to.r, c: to.c };
     let mut steps = 0;
     while current != dest {
       let dr = to.r - current.r;
@@ -96,54 +97,75 @@ fn read_input(input: &str) -> Vec<Vec<String>> {
     .collect()
 }
 
-fn part1(input: &str) -> u64 {
-  let matrix = read_input(input);
-  let grid = Grid::new(matrix, None);
-  let mut res = 0u64;
-  let galaxies = &grid.galaxies;
-  let n = galaxies.len();
-  for i in 0..n-1 {
-    for j in i+1..n {
-      let d = grid.shortest_path(&galaxies[i], &galaxies[j]);
-      res += d as u64;
-    }
+
+struct Day11;
+
+impl Day for Day11 {
+  type Input = String;
+  type Output = u64;
+  fn day() -> u32 { 11 }
+  fn year() -> u32 { 2023 }
+
+  fn parse_input(input: String) -> Self::Input {
+    input.trim().to_string()
   }
-  res
+
+  fn part1(input: &String) -> u64 {
+    let matrix = read_input(input);
+    let grid = Grid::new(matrix, None);
+    let mut res = 0u64;
+    let galaxies = &grid.galaxies;
+    let n = galaxies.len();
+    for i in 0..n - 1 {
+      for j in i + 1..n {
+        let d = grid.shortest_path(&galaxies[i], &galaxies[j]);
+        res += d as u64;
+      }
+    }
+    res
+  }
+
+  fn part2(input: &String) -> u64 {
+    let matrix = read_input(input);
+    let grid = Grid::new(matrix, Some(1000000));
+    let mut res = 0u64;
+    let galaxies = &grid.galaxies;
+    let n = galaxies.len();
+    for i in 0..n - 1 {
+      for j in i + 1..n {
+        let d = grid.shortest_path(&galaxies[i], &galaxies[j]);
+        res += d as u64;
+      }
+    }
+    res
+  }
 }
 
-fn part2(input: &str) -> u64 {
-  let matrix = read_input(input);
-  let grid = Grid::new(matrix, Some(1000000));
-  let mut res = 0u64;
-  let galaxies = &grid.galaxies;
-  let n = galaxies.len();
-  for i in 0..n-1 {
-    for j in i+1..n {
-      let d = grid.shortest_path(&galaxies[i], &galaxies[j]);
-      res += d as u64;
-    }
+
+pub mod tests {
+  use std::fs;
+  use crate::aoc2023::day11::Day11;
+  use crate::common::day::Day;
+
+  #[test]
+  fn test_part1() {
+    let input =
+      "...#......
+.......#..
+#.........
+..........
+......#...
+.#........
+.........#
+..........
+.......#..
+#...#.....".to_owned();
+
+    Day11::part1(&input);
   }
-  res
-}
 
-fn main() {
-  let debug = false;
-  let filename = "input.txt";
-  let input = if debug {
-    "...#......
-    .......#..
-    #.........
-    ..........
-    ......#...
-    .#........
-    .........#
-    ..........
-    .......#..
-    #...#.....".to_owned()
-  } else {
-    fs::read_to_string(filename).expect("Failed to read input file")
-  };
-
-  println!("2023 Day 11, Part 1: {}", part1(input.as_str()));
-  println!("2023 Day 11, Part 2: {}", part2(input.as_str()));
+  #[test]
+  fn run() {
+    Day11::run()
+  }
 }

@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 md5 = "*"
 regex = "*"
+reqwest = { version = "0.12", features = ["blocking", "json"] }

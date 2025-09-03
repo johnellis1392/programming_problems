@@ -1,14 +1,7 @@
 // use regex::Regex;
 
+use crate::common::day::Day;
 use crate::utils::profile;
-
-pub fn parse_input(input: &str) -> Vec<&str> {
-  input.trim()
-  .lines()
-  .map(|line| line.trim())
-  .filter(|line| !line.is_empty())
-  .collect()
-}
 
 trait Nice {
   fn is_nice(&self) -> bool;
@@ -73,21 +66,31 @@ impl Nice for String {
   }
 }
 
-pub fn part1(strs: &Vec<&str>) -> usize {
-  strs.iter().filter(|s| s.to_string().is_nice()).count()
-}
 
-pub fn part2(strs: &Vec<&str>) -> usize {
-  strs.iter().filter(|s| s.to_string().is_nicer()).count()
-}
+struct Day05;
 
-pub fn main() {
-  let input = include_str!("../../input/aoc2015/day05.input.txt");
-  let strs = parse_input(input);
-  let res1 = profile(|| part1(&strs));
-  println!("2015 Day 5, Part 1: {res1}");
-  let res2 = profile(|| part2(&strs));
-  println!("2015 Day 5, Part 2: {res2}");
+impl Day for Day05 {
+  type Input = Vec<String>;
+  type Output = usize;
+  fn day() -> u32 { 5 }
+  fn year() -> u32 { 2015 }
+
+  fn parse_input(input: String) -> Vec<String> {
+    input.trim()
+      .lines()
+      .map(|line| line.trim())
+      .filter(|line| !line.is_empty())
+      .map(|line| line.to_string())
+      .collect()
+  }
+  
+  fn part1(strs: &Vec<String>) -> usize {
+    strs.iter().filter(|s| s.to_string().is_nice()).count()
+  }
+
+  fn part2(strs: &Vec<String>) -> usize {
+    strs.iter().filter(|s| s.to_string().is_nicer()).count()
+  }
 }
 
 pub mod tests {
@@ -108,5 +111,10 @@ pub mod tests {
     assert_eq!(true, "xxyxx".to_string().is_nicer());
     assert_eq!(false, "uurcxstgmygtbstg".to_string().is_nicer());
     assert_eq!(false, "ieodomkazucvgmuy".to_string().is_nicer());
+  }
+  
+  #[test]
+  fn run() {
+    Day05::run();
   }
 }

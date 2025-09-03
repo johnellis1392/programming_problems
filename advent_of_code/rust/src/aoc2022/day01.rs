@@ -1,55 +1,64 @@
-use std::fs::{File};
-use std::io::{self, BufRead, BufReader};
+use crate::common::day::Day;
+use std::io::BufRead;
 
-fn day01_part1(filename: &str) -> i32 {
-    // let file = fs::read_to_string(filename)
-    //     .expect("An error occurred while reading file");
-    // println!("File Contents: {}", file);
-    let file: File = File::open(filename).expect("Failed to open file");
-    let lines: io::Lines<BufReader<File>> = io::BufReader::new(file).lines();
+
+struct Day01;
+
+impl Day for Day01 {
+  type Input = String;
+  type Output = i32;
+  fn day() -> u32 { 1 }
+  fn year() -> u32 { 2022 }
+
+  fn parse_input(input: String) -> Self::Input {
+    input.trim().to_string()
+  }
+
+  fn part1(input: &String) -> i32 {
+    let lines = input.lines();
     let mut results: Vec<i32> = Vec::new();
     let mut values: Vec<i32> = Vec::new();
 
     for line in lines {
-        if let Some(r) = line.ok().and_then(|v| { v.parse::<i32>().ok() }) {
-            values.push(r);
-        } else {
-            results.push(values.iter().sum());
-            values.clear();
-        }
+      if let Some(r) = line.parse::<i32>().ok() {
+        values.push(r);
+      } else {
+        results.push(values.iter().sum());
+        values.clear();
+      }
     }
 
     results.push(values.iter().sum());
     results.sort();
     results.pop().expect("An error occurred while popping result list")
-}
+  }
 
-fn day01_part2(filename: &str) -> i32 {
-    let file: File = File::open(filename).expect("Failed to open file");
-    let lines = io::BufReader::new(file).lines();
+  fn part2(input: &String) -> i32 {
+    let lines = input.lines();
     let mut results: Vec<i32> = Vec::new();
     let mut values: Vec<i32> = Vec::new();
 
     for line in lines {
-        if let Some(r) = line.ok().and_then(|v| { v.parse::<i32>().ok() }) {
-            values.push(r);
-        } else {
-            results.push(values.iter().sum());
-            values.clear();
-        }
+      if let Some(r) = line.parse::<i32>().ok() {
+        values.push(r);
+      } else {
+        results.push(values.iter().sum());
+        values.clear();
+      }
     }
 
     results.push(values.iter().sum());
     results.sort();
-    // results.iter().take(3).sum()
     results.iter().skip(results.len() - 3).sum()
+  }
 }
 
-fn main() {
-    // let input_filename: &str = "input.test.txt";
-    let input_filename: &str = "input.txt";
-    let result1: i32 = day01_part1(input_filename);
-    println!("Result1: {}", result1);
-    let result2: i32 = day01_part2(input_filename);
-    println!("Result2: {}", result2);
+pub mod tests {
+  use crate::aoc2022::day01::Day01;
+  use crate::common::day::Day;
+
+  #[test]
+  fn run() {
+    Day01::run();
+  }
 }
