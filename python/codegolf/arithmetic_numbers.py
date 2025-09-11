@@ -1,0 +1,1 @@
+f,r,l=filter,range,list;a=lambda n:l(f(lambda i:n%i==0,r(1,n+1)));b=lambda x:sum(x)/len(x)%1==0;l(map(print,f(lambda x:b(a(x)),r(1,10_001))))

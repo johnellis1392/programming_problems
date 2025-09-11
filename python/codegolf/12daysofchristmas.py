@@ -1,0 +1,3 @@
+a='A Partridge in a Pear Tree.^Two Turtle Doves, and^Three French Hens,^Four Calling Birds,^Five Gold Rings,^Six Geese-a-Laying,^Seven Swans-a-Swimming,^Eight Maids-a-Milking,^Nine Ladies Dancing,^Ten Lords-a-Leaping,^Eleven Pipers Piping,^Twelve Drummers Drumming,'.split('^')
+b="First Second Third Fourth Fifth Sixth Seventh Eighth Ninth Tenth Eleventh Twelfth".split()
+print('\n'.join(map(lambda i: 'On the %s day of Christmas\nMy true love sent to me\n%s\n'%(b[i], '\n'.join(a[i::-1])), range(12))))

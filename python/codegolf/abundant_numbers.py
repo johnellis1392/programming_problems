@@ -1,0 +1,1 @@
+f,r=filter,range;list(map(print,f(lambda n:n<sum(f(lambda i:n%i==0,r(1,n//2+1))),r(201))))
